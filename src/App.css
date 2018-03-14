@@ -38,13 +38,28 @@
 }
 
 .css_duration1 {
-  padding: 10%;
+  height: auto;
 }
 
 .css_duration2 {
-  padding: 20%;
+  height: auto;
 }
 
 .css_duration3 {
-  padding: 30%;
+  height: auto;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto auto;
+  background-color: #2196F3;
+  padding: 10px;
+}
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
 }

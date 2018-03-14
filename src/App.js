@@ -39,37 +39,41 @@ class WeekOverview extends Component {
                             <h4 className="event-figure">kolonne 2 på rad...</h4>
                         </div>
                     </div>
-
-                    <div className="row">
-                        <div className="col-md-1">
+                    <div class="grid-container">
+                        <div class="grid-item-hour">
                             Hour
                             {this._populateHours()}
                         </div>
-                        <div className="col-md-2">
+                        <div class="grid-item-weekdays">
                             Monday
                             {this._populateEvents(mondayEvents)}
                         </div>
-                        <div className="col-md-2">
+                        <div class="grid-item-weekdays">
                             Thuesday
                             {this._populateEvents(thuesdayEvents)}
                         </div>
-                        <div className="col-md-2">
+                        <div class="grid-item-weekdays">
                             Wednesday
                             {this._populateEvents(wednesdayEvents)}
                         </div>
-                        <div className="col-md-2">
+                        <div class="grid-item-weekdays">
                             Thursday
                             {this._populateEvents(thursdayEvents)}
                         </div>
-                        <div className="col-md-2">
+                        <div class="grid-item-weekdays">
                             Friday
                             {this._populateEvents(fridayEvents)}
                         </div>
-                        <div className="col-md-1">
-                            Weekend
-                            {saturdayEvents}{sundayEvents}
+                        <div class="grid-item-weekend">
+                            Saturday
+                            {this._populateEvents(saturdayEvents)}
+                        </div>
+                        <div class="grid-item-weekend">
+                            Sunday
+                            {this._populateEvents(sundayEvents)}
                         </div>
                     </div>
+
                 </div>
             </div>
         );
@@ -101,8 +105,8 @@ class WeekOverview extends Component {
                 id: 3,
                 actor: {pid: 4, name: 'Maia', image: './images/Maia.png'},
                 helper: {pid: 0, name: 'Jørn', image: './images/Jorn.png'},
-                start: '2018-08-22T13:00:00.000',
-                end: '2018-08-22T16:00:00.000',
+                start: '2018-08-22T17:00:00.000',
+                end: '2018-08-22T18:00:00.000',
                 activity: {name: 'Bassøving', location: 'Charlottenlund'}
             },
             {
@@ -160,6 +164,9 @@ class WeekOverview extends Component {
     }
 
     _populateEvents(dailyEventList) {
+        //ToDo - include push of items for days with no events
+
+
         console.log('dailyEvents + length: ', dailyEventList, ' ', dailyEventList.length, ' ', typeof dailyEventList);
         const starthour = 8;
         const endhour = 23;
@@ -196,7 +203,8 @@ class WeekOverview extends Component {
                     helper={eventHour.event.props.helper}
                     helperImage={eventHour.event.props.helperImage}
                     location={eventHour.event.props.location}
-                    start={eventHour.event.props.start}/>);
+                    start={eventHour.event.props.start}
+                    end={eventHour.event.props.end}/>);
             } else {
                 return(<Hour
                     key={eventHour.id}
@@ -212,11 +220,11 @@ class WeekOverview extends Component {
 class Hour extends Component {
   render () {
       return (
-        <div className="container">
+
             <div className="hour">
                 <p>{this.props.hour}</p>
             </div>
-        </div>
+
       );
   }
 }
@@ -228,22 +236,28 @@ class Event extends Component {
       console.log("Dato ",  this.props.start, typeof this.props.start);
       console.log("Activity ", this.props.activity, typeof this.props.activity);
       return (
-        <div className="container">
             <div className='event'>
-                <div className="event-activty" >
+                <div className={this._getDuration()} >
                     <img className="image"  src={this.props.actorImage} />
                     <img className="image" src={this.props.helperImage} align="right" />
                     <p> {this.props.activity}</p>
-
                 </div>
-
-
             </div>
-        </div>
+
     );
   }
 
+    _getDuration() {
 
+        const startObj = new Date(this.props.start);
+        const endObj = new Date(this.props.end);
+
+        let duration = endObj.getHours() - startObj.getHours();
+        return "css_duration" + duration;
+    }
+
+
+//TODO - is this used/necessary?
   _getDates(){
 
       let dateList = [];
@@ -297,8 +311,8 @@ class Event extends Component {
   }
 }
 
+//TODO - check if this is neccesary / used
 class DateEvent extends Component {
-
     render() {
         let duration = this._getduration();
         return (
@@ -313,9 +327,7 @@ class DateEvent extends Component {
             </div>
         );
     }
-
     _getduration() {
-
         let durationHours = this.props.endHour- this.props.startHour;
         let css_style = "css_duration" + durationHours;
         //css_style +=  durationHours;
@@ -324,5 +336,6 @@ class DateEvent extends Component {
         return css_style;
     }
 }
+
 
 export default WeekOverview;
