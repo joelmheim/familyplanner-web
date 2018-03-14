@@ -5,22 +5,23 @@ import './App.css';
 
 class WeekOverview extends Component {
     render() {
-        const mondayEvents = this._getEvents(1) || [];
-        const thuesdayEvents = this._getEvents(2) || [];
-        const wednesdayEvents = this._getEvents(3) || [];
-        const thursdayEvents = this._getEvents(4) || [];
-        const fridayEvents = this._getEvents(5) || [];
-        const weekendEvents = this._getEvents(6) || [];
-        const numEvents = mondayEvents.length
-                        + thuesdayEvents.length
-                        + wednesdayEvents.length
-                        + thursdayEvents.length
-                        + fridayEvents.length
-                        + weekendEvents.length
+        const allEvents = this._getEvents();
+        console.log('AllEvents ', allEvents, typeof allEvents);
+        const mondayEvents = this._filterDayEvents(allEvents, 1) || [];
+        console.log('mondayEvents: ', mondayEvents);
+        const thuesdayEvents = this._filterDayEvents(allEvents, 2) || [];
+        console.log('thuesdayEvents: ', thuesdayEvents);
+        const wednesdayEvents = this._filterDayEvents(allEvents, 3) || [];
+        const thursdayEvents = this._filterDayEvents(allEvents, 4) || [];
+        const fridayEvents = this._filterDayEvents(allEvents, 5) || [];
+        const saturdayEvents = this._filterDayEvents(allEvents, 6) || [];
+        const sundayEvents = this._filterDayEvents(allEvents, 0) || [];
+        const numEvents = allEvents.length;
+
         return (
             <div className="WeekOverview">
                 <header className="Week-header">
-                    <img src={logo} className="App-logo" alt="logo" />
+                    <img src={logo} className="App-logo" alt="logo"/>
                     <h1 className="App-title">Welcome to FamilyPlanner</h1>
                 </header>
 
@@ -40,29 +41,33 @@ class WeekOverview extends Component {
                     </div>
 
                     <div className="row">
+                        <div className="col-md-1">
+                            Hour
+                            {this._populateHours()}
+                        </div>
                         <div className="col-md-2">
                             Monday
-                            {mondayEvents}
+                            {this._populateEvents(mondayEvents)}
                         </div>
                         <div className="col-md-2">
                             Thuesday
-                                {thuesdayEvents}
+                            {this._populateEvents(thuesdayEvents)}
                         </div>
                         <div className="col-md-2">
                             Wednesday
-                            {wednesdayEvents}
+                            {this._populateEvents(wednesdayEvents)}
                         </div>
                         <div className="col-md-2">
                             Thursday
-                            {thursdayEvents}
+                            {this._populateEvents(thursdayEvents)}
                         </div>
                         <div className="col-md-2">
                             Friday
-                            {fridayEvents}
+                            {this._populateEvents(fridayEvents)}
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md-1">
                             Weekend
-                            {weekendEvents}
+                            {saturdayEvents}{sundayEvents}
                         </div>
                     </div>
                 </div>
@@ -70,23 +75,28 @@ class WeekOverview extends Component {
         );
     }
 
-    _getEvents(dayOfWeek) {
+    _getEvents() {
         //ToDo - replace with request to API
-        const eventList = [
-            {id:1,
-             actor: {pid:1, name: 'Emma', image:'./images/Emma.png' },
-             helper: {pid:2, name: 'Marita',image:'./images/Marita.png'},
-             start: '2018-08-20T18:00:00.000',
-             end: '2018-08-20T19:00:00.000',
-             activity: {name: 'Svømming', location: 'Pirbadet'}
-             },
-            {id:2,
-             actor: {pid:3, name: 'Sondre', image:'./images/Sondre.png' },
-             helper: {pid: 0 , name: 'Jørn',image:'./images/Jorn.png'},
-             start: '2018-08-21T14:00:00.000',
-             end: '2018-08-21T16:00:00.000',
-             activity: {name: 'fotballtrening', location: 'Molde'}
-             },
+        let eventList = []; //empty list on  each function call
+        console.log('length eventlist: ', eventList.length);
+
+        eventList = [
+            {
+                id: 1,
+                actor: {pid: 1, name: 'Emma', image: './images/Emma.png'},
+                helper: {pid: 2, name: 'Marita', image: './images/Marita.png'},
+                start: '2018-08-20T18:00:00.000',
+                end: '2018-08-20T21:00:00.000',
+                activity: {name: 'Svømming', location: 'Pirbadet'}
+            },
+            {
+                id: 2,
+                actor: {pid: 3, name: 'Sondre', image: './images/Sondre.png'},
+                helper: {pid: 0, name: 'Jørn', image: './images/Jorn.png'},
+                start: '2018-08-21T14:00:00.000',
+                end: '2018-08-21T16:00:00.000',
+                activity: {name: 'fotballtrening', location: 'Molde'}
+            },
             {
                 id: 3,
                 actor: {pid: 4, name: 'Maia', image: './images/Maia.png'},
@@ -95,19 +105,16 @@ class WeekOverview extends Component {
                 end: '2018-08-22T16:00:00.000',
                 activity: {name: 'Bassøving', location: 'Charlottenlund'}
             },
-            {id:4,
-                actor: {pid:4, name: 'Maia', image:'./images/Maia.png' },
-                helper: {pid: 2 , name: 'Marita',image:'./images/Marita.png'},
+            {
+                id: 4,
+                actor: {pid: 4, name: 'Maia', image: './images/Maia.png'},
+                helper: {pid: 2, name: 'Marita', image: './images/Marita.png'},
                 start: '2018-08-23T17:00:00.000',
                 end: '2018-08-23T20:00:00.000',
                 activity: {name: 'Korps', location: 'Vikåsen'}
             }];
 
-        return eventList.map( (event)=>{
-            let eventObj = new Date(event.start);
-            console.log('dayofweek:', dayOfWeek, 'objday ', eventObj.getDay() );
-            if (dayOfWeek === eventObj.getDay() ) {
-
+        return eventList.map((event) => {
                 return (<Event
                     key={event.id}
                     actor={event.actor.name}
@@ -119,9 +126,101 @@ class WeekOverview extends Component {
                     activity={event.activity.name}
                     location={event.activity.location}/>);
             }
+        );
+    }
+
+    _filterDayEvents(eventList, dayid) {
+        let dayEventList = [];
+        let weekdayObj;
+
+        for (let i = 0; i < eventList.length; i++) {
+            weekdayObj = new Date(eventList[i].props.start);
+            if (dayid === weekdayObj.getDay()) {
+                dayEventList.push(eventList[i]);
+            }
+        }
+        console.log('length DayilyEvents dayid/length ', dayid, dayEventList.length);
+
+        return dayEventList;
+    }
+
+    _populateHours() {
+        let hoursList = [];
+        const starthour = 8
+        const endhour = 23;
+        for (let i = starthour; i <= endhour; i++) {
+            hoursList.push({id: i, hour: i});
+        }
+
+        return hoursList.map((hour) => {
+            return (<Hour
+                key={hour.id}
+                hour={hour.hour}/>);
+        });
+    }
+
+    _populateEvents(dailyEventList) {
+        console.log('dailyEvents + length: ', dailyEventList, ' ', dailyEventList.length, ' ', typeof dailyEventList);
+        const starthour = 8;
+        const endhour = 23;
+        let eventHourList = [];
+        let eventObjStart;
+        let eventObjEnd;
+        let activeUptoHour;
+        for (let hour = starthour; hour <= endhour; hour++) {
+            for (let index = 0; index < dailyEventList.length; index++) {
+                eventObjStart = new Date(dailyEventList[index].props.start);
+                eventObjEnd = new Date(dailyEventList[index].props.end);
+                if (hour === eventObjStart.getHours()) {
+                    eventHourList.push({id: hour, hour: hour, hasEvent: true, event: dailyEventList[index]});
+                    activeUptoHour = eventObjEnd.getHours();
+                } else {
+                    if (hour < activeUptoHour) {
+                        console.log('Skip this hour container due active event')
+                    } else {
+                        eventHourList.push({id: hour, hour: hour, hasEvent: false, event: []});
+                    }
+                }
+            }
+        }
+        //TODO - fill inn all props
+        return eventHourList.map((eventHour) => {
+            if (eventHour.hasEvent) {
+                return (<Event
+                    key={eventHour.id}
+                    hour={eventHour.hour}
+                    hasEvent={eventHour.hasEvent}
+                    activity={eventHour.event.props.activity}
+                    actor={eventHour.event.props.actor}
+                    actorImage={eventHour.event.props.actorImage}
+                    helper={eventHour.event.props.helper}
+                    helperImage={eventHour.event.props.helperImage}
+                    location={eventHour.event.props.location}
+                    start={eventHour.event.props.start}/>);
+            } else {
+                return(<Hour
+                    key={eventHour.id}
+                    hour={eventHour.hour}
+                    hasEvent={eventHour.hasEvent}/>
+                );
+            }
         });
     }
 }
+
+
+class Hour extends Component {
+  render () {
+      return (
+        <div className="container">
+            <div className="hour">
+                <p>{this.props.hour}</p>
+            </div>
+        </div>
+      );
+  }
+}
+
 
 class Event extends Component {
   render() {
@@ -134,7 +233,7 @@ class Event extends Component {
                 <div className="event-activty" >
                     <img className="image"  src={this.props.actorImage} />
                     <img className="image" src={this.props.helperImage} align="right" />
-                    <p>Activity: {this.props.activity} {dateEvent}</p>
+                    <p> {this.props.activity}</p>
 
                 </div>
 
