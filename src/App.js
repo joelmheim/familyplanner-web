@@ -5,17 +5,9 @@ import './App.css';
 
 class WeekOverview extends Component {
     render() {
-        const allEvents = this._getEvents();
+        const allEvents = this._getEvents() || [];
         console.log('AllEvents ', allEvents, typeof allEvents);
-        const mondayEvents = this._filterDayEvents(allEvents, 1) || [];
-        console.log('mondayEvents: ', mondayEvents);
-        const thuesdayEvents = this._filterDayEvents(allEvents, 2) || [];
-        console.log('thuesdayEvents: ', thuesdayEvents);
-        const wednesdayEvents = this._filterDayEvents(allEvents, 3) || [];
-        const thursdayEvents = this._filterDayEvents(allEvents, 4) || [];
-        const fridayEvents = this._filterDayEvents(allEvents, 5) || [];
-        const saturdayEvents = this._filterDayEvents(allEvents, 6) || [];
-        const sundayEvents = this._filterDayEvents(allEvents, 0) || [];
+
         const numEvents = allEvents.length;
 
         return (
@@ -36,42 +28,21 @@ class WeekOverview extends Component {
                             <h4 className="event-count">{numEvents} events this week</h4>
                         </div>
                         <div className="col-md-6">
-                            <h4 className="event-figure">kolonne 2 på rad...</h4>
+                            <h4 className="event-figure">Week number...</h4>
                         </div>
                     </div>
-                    <div class="grid-container">
-                        <div class="grid-item-hour">
-                            Hour
-                            {this._populateHours()}
+                    <div className="grid-container">
+
+                        <div className="grid-col3 grid-row1 grid-span2">
+                            row1-2, colum 3
                         </div>
-                        <div class="grid-item-weekdays">
-                            Monday
-                            {this._populateEvents(mondayEvents)}
+                        <div className="grid-item">
+                            row 2-4, column 2
                         </div>
-                        <div class="grid-item-weekdays">
-                            Thuesday
-                            {this._populateEvents(thuesdayEvents)}
-                        </div>
-                        <div class="grid-item-weekdays">
-                            Wednesday
-                            {this._populateEvents(wednesdayEvents)}
-                        </div>
-                        <div class="grid-item-weekdays">
-                            Thursday
-                            {this._populateEvents(thursdayEvents)}
-                        </div>
-                        <div class="grid-item-weekdays">
-                            Friday
-                            {this._populateEvents(fridayEvents)}
-                        </div>
-                        <div class="grid-item-weekend">
-                            Saturday
-                            {this._populateEvents(saturdayEvents)}
-                        </div>
-                        <div class="grid-item-weekend">
-                            Sunday
-                            {this._populateEvents(sundayEvents)}
-                        </div>
+                        {this._populateHours()}
+                        {this._populateEvents(allEvents)}
+
+
                     </div>
 
                 </div>
@@ -133,24 +104,10 @@ class WeekOverview extends Component {
         );
     }
 
-    _filterDayEvents(eventList, dayid) {
-        let dayEventList = [];
-        let weekdayObj;
-
-        for (let i = 0; i < eventList.length; i++) {
-            weekdayObj = new Date(eventList[i].props.start);
-            if (dayid === weekdayObj.getDay()) {
-                dayEventList.push(eventList[i]);
-            }
-        }
-        console.log('length DayilyEvents dayid/length ', dayid, dayEventList.length);
-
-        return dayEventList;
-    }
 
     _populateHours() {
         let hoursList = [];
-        const starthour = 8
+        const starthour = 0;
         const endhour = 23;
         for (let i = starthour; i <= endhour; i++) {
             hoursList.push({id: i, hour: i});
@@ -163,177 +120,77 @@ class WeekOverview extends Component {
         });
     }
 
-    _populateEvents(dailyEventList) {
-        //ToDo - include push of items for days with no events
+    _populateEvents(events) {
+        console.log("antall events ", events.length, typeof events);
+        let eventList = [];
+        let eventStartObj;
+        let weekday;
+        let starttime;
+        let duration;
 
-
-        console.log('dailyEvents + length: ', dailyEventList, ' ', dailyEventList.length, ' ', typeof dailyEventList);
-        const starthour = 8;
-        const endhour = 23;
-        let eventHourList = [];
-        let eventObjStart;
-        let eventObjEnd;
-        let activeUptoHour;
-        for (let hour = starthour; hour <= endhour; hour++) {
-            for (let index = 0; index < dailyEventList.length; index++) {
-                eventObjStart = new Date(dailyEventList[index].props.start);
-                eventObjEnd = new Date(dailyEventList[index].props.end);
-                if (hour === eventObjStart.getHours()) {
-                    eventHourList.push({id: hour, hour: hour, hasEvent: true, event: dailyEventList[index]});
-                    activeUptoHour = eventObjEnd.getHours();
-                } else {
-                    if (hour < activeUptoHour) {
-                        console.log('Skip this hour container due active event')
-                    } else {
-                        eventHourList.push({id: hour, hour: hour, hasEvent: false, event: []});
-                    }
-                }
-            }
+        for (let id = 0; id < events.length; id++) {
+            eventList.push({id: id, event: events[id]});
         }
-        //TODO - fill inn all props
-        return eventHourList.map((eventHour) => {
-            if (eventHour.hasEvent) {
-                return (<Event
-                    key={eventHour.id}
-                    hour={eventHour.hour}
-                    hasEvent={eventHour.hasEvent}
-                    activity={eventHour.event.props.activity}
-                    actor={eventHour.event.props.actor}
-                    actorImage={eventHour.event.props.actorImage}
-                    helper={eventHour.event.props.helper}
-                    helperImage={eventHour.event.props.helperImage}
-                    location={eventHour.event.props.location}
-                    start={eventHour.event.props.start}
-                    end={eventHour.event.props.end}/>);
-            } else {
-                return(<Hour
-                    key={eventHour.id}
-                    hour={eventHour.hour}
-                    hasEvent={eventHour.hasEvent}/>
-                );
-            }
+
+        return eventList.map((event) => {
+            return ( <Event
+                key={event.id}
+                activity={event.event.props.activity}
+                actor={event.event.props.actor}
+                actorImage={event.event.props.actorImage}
+                helper={event.event.props.helper}
+                helperImage={event.event.props.helperImage}
+                location={event.event.props.location}
+                start={event.event.props.start}
+                end={event.event.props.end}/>);
         });
     }
 }
-
 
 class Hour extends Component {
   render () {
       return (
 
-            <div className="hour">
-                <p>{this.props.hour}</p>
+            <div className={this._getHourinGrid()}>
+                <div className="hour">
+                    <p>{this.props.hour}</p>
+                </div>
             </div>
 
       );
+  }
+
+  _getHourinGrid() {
+      let hourinGrid = "grid-item grid-col1"+ " grid-row" + this.props.hour + " grid-span1" ;
+      return hourinGrid;
   }
 }
 
 
 class Event extends Component {
-  render() {
-      const dateEvent = this._getDates() || [];
-      console.log("Dato ",  this.props.start, typeof this.props.start);
-      console.log("Activity ", this.props.activity, typeof this.props.activity);
-      return (
-            <div className='event'>
-                <div className={this._getDuration()} >
-                    <img className="image"  src={this.props.actorImage} />
-                    <img className="image" src={this.props.helperImage} align="right" />
-                    <p> {this.props.activity}</p>
-                </div>
+    render() {
+       return(
+        <div className={this._getEventinGrid()}>
+            <div className="event">
+                <img className="image" src={this.props.actorImage} align="left"/>
+                <img className="image" src={this.props.helperImage} align="right"/>
+                <p> {this.props.activity} {this.props.location}</p>
             </div>
+        </div> );
+    }
 
-    );
-  }
 
-    _getDuration() {
+    _getEventinGrid() {
 
         const startObj = new Date(this.props.start);
         const endObj = new Date(this.props.end);
 
-        let duration = endObj.getHours() - startObj.getHours();
-        return "css_duration" + duration;
-    }
-
-
-//TODO - is this used/necessary?
-  _getDates(){
-
-      let dateList = [];
-
-      let startDateObj = new Date(this.props.start);
-      let endDateObj = new Date(this.props.end);
-      let startYear = startDateObj.getYear();
-      let endYear = endDateObj.getYear();
-      let startMonth = startDateObj.getMonth();
-      let endMonth = endDateObj.getMonth();
-      let startDate = startDateObj.getDate();
-      let endDate = endDateObj.getDate();
-      let startDay = endDateObj.getDay();
-      let endDay = endDateObj.getDay();
-      let startHour = startDateObj.getHours();
-      let endHour = endDateObj.getHours()
-      let startMinute = startDateObj.getMinutes();
-      let endMinute = endDateObj.getMinutes();
-
-      dateList.push({id: 1,
-                    startYear: startYear,
-                    startMonth: startMonth,
-                    startDate: startDate,
-                    startDay: startDay,
-                    startHour: startHour,
-                    startMinute: startMinute,
-                    endYear: endYear,
-                    endMonth: endMonth,
-                    endDate: endDate,
-                    endDay: endDay,
-                    endHour: endHour,
-                    endMinute: endMinute});
-      console.log('DateList: ', dateList);
-
-      return dateList.map( (datevent)=>{
-          return(<DateEvent
-              key={datevent.id}
-              startYear={datevent.startYear}
-              startMonth={datevent.startMonth}
-              startDate={datevent.startDate}
-              startDayofWeek={datevent.startDay}
-              startHour={datevent.startHour}
-              startMinute={datevent.startMinute}
-              endYear={datevent.endYear}
-              endMonth={datevent.endMonth}
-              endDate={datevent.endDate}
-              endDayofWeek={datevent.endDay}
-              endHour={datevent.endHour}
-              endMinute={datevent.endMinute}/>);
-      });
-  }
-}
-
-//TODO - check if this is neccesary / used
-class DateEvent extends Component {
-    render() {
-        let duration = this._getduration();
-        return (
-            <div className="container">
-                <div className='dateevent card card-group'>
-                    <div className="start">
-                        <div className={this._getduration()}>
-                            //{this.props.startDate}, {this.props.startHour},{this.props.startMinute},{this.props.endDate}, {this.props.endHour},{this.props.endMinute}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-    _getduration() {
-        let durationHours = this.props.endHour- this.props.startHour;
-        let css_style = "css_duration" + durationHours;
-        //css_style +=  durationHours;
-        //css_style +=  '">';
-        console.log('css style: ', css_style);
-        return css_style;
+        let start_time = startObj.getHours();
+        let duration = endObj.getHours() - start_time;
+        let weekday = startObj.getDay() + 1;
+        let placeinGrid = "grid-item grid-col" + weekday + " grid-row" + start_time + " grid-span" + duration;
+        console.log(placeinGrid);
+        return placeinGrid;
     }
 }
 
