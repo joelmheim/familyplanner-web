@@ -42,45 +42,21 @@ class WeekOverview extends Component {
 
 
     render() {
-        //const allEvents = this._getEvents() || [];
-        //console.log('AllEvents ', allEvents, typeof allEvents);
-
-        //const numEvents = allEvents.length;
-
         return (
-            <div className="WeekOverview">
-                <header className="Week-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">Welcome to FamilyPlanner</h1>
-                </header>
-
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <h3>This week's events</h3>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-3">
-                            <h4 className="event-count">{this.state.numEvents} events in total</h4>
-                        </div>
-                        <div className="col-md-9">
-                            <div className="event-week">
-                                <h4> Week number</h4>
-                                    <div>
-                                        <button onClick= {this.decreaseWeek}>-</button>
-                                        {this.state.weekNumber}
-                                        <button onClick={this.incrementWeek}>+</button>
-                                    </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="grid-container">
-                        {this._populateHours()}
-                        {this._populateEvents(this.state.events, this.state.weekNumber)}
-                    </div>
-
+            <div className="grid-container">
+                <div className="header">
+                    Familyplanner
+                    <button onClick={this.decreaseWeek}>-</button>
+                        {this.state.weekNumber}
+                    <button onClick={this.incrementWeek}>+</button>
                 </div>
+                <div className="main">
+                    Main
+                    {this._populateHours()}
+                    {this._populateEvents(this.state.events, this.state.weekNumber)}
+                </div>
+
+                <div className="aside">ikon</div>
             </div>
         );
     }
