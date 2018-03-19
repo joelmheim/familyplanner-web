@@ -1,50 +1,44 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-
-.event {
-  text-align: center;
-  font-family: "Comic Sans MS";
-
-}
 
 .image {
   height: 40px;
   width: 30px;
+  border-radius: 25px;
 }
 
-.hour {
-  background-color: #72898b;
-  text-align: center;
+.event-week {
+  font-family: "Comic Sans MS";
+  font-size: larger;
 }
 
 .grid-container {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  grid-template-row: 100px 1 fr;
+  grid-template-areas: "header header"
+                        "sidebar content";
+
+}
+.header {
+  grid-area: header;
+}
+
+.main {
+  grid-area: content;
+  display: grid;
+  grid-template-columns: 1fr repeat(7, 2fr);
+  grid-template-rows: repeat(24,1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  background-color: #cce5ff;
+}
+.aside {
+  grid-area: sidebar;
+}
+
+
+
+
+.grid-container_old {
   display: grid;
   grid-template-columns: 1fr repeat(7, 2fr);
   grid-template-rows: repeat(24,1fr);
@@ -54,9 +48,24 @@
 }
 
 .grid-item {
-  background-color: #71dd8a;
+
   border-radius: 25px;
   box-shadow: 5px 5px;
+}
+
+.grid-event {
+  text-align: center;
+  font-family: "Comic Sans MS";
+  background-color: #71dd8a;
+}
+
+.grid-hour {
+  text-align: center;
+  font-family: "Comic Sans MS";
+  font-size: large;
+  background-color: #72898b;
+
+
 }
 
 .grid-col1 {
