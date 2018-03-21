@@ -9,9 +9,10 @@ class WeekOverview extends Component {
         super(props);
         this.state = {
           events: [],
+          weekdays: [],
           weekNumber: 0,
           numEvents: 0,
-          clicks: 0,
+          language: "No",
           show:true
 
         };
@@ -23,9 +24,11 @@ class WeekOverview extends Component {
 
     populateState() {
         let events = this._getEvents();
+        let language = "No";
+        let weekdays = this._getWeekdays();
         let today = new Date();
         let thisWeek = today.getWeek()
-        this.setState({events:events, weekNumber: thisWeek, numEvents:events.length});
+        this.setState({events:events, weekNumber: thisWeek, weekdays: weekdays, numEvents:events.length});
 
         console.log("Dagens dato og uke: ", today, " ", thisWeek);
 
@@ -45,13 +48,22 @@ class WeekOverview extends Component {
         return (
             <div className="grid-container">
                 <div className="header">
-                    Familyplanner
-                    <button onClick={this.decreaseWeek}>-</button>
-                        {this.state.weekNumber}
-                    <button onClick={this.incrementWeek}>+</button>
+                    <div className="start"> Familyplanner</div>
+                    <div className="nav-left">
+                        <button onClick={this.decreaseWeek} >
+                            -
+                        </button>
+                    </div>
+                    <div className="week"> {this.state.weekNumber}</div>
+                     <div className="nav-right">
+                         <button onClick={this.incrementWeek}>
+                            +
+                        </button>
+                     </div>
                 </div>
                 <div className="main">
                     Main
+                    {this._populateWeekdays(this.state.weekdays, this.state.language)}
                     {this._populateHours()}
                     {this._populateEvents(this.state.events, this.state.weekNumber)}
                 </div>
@@ -61,13 +73,23 @@ class WeekOverview extends Component {
         );
     }
 
-    //TO DO - denne er ikke rett
-    _getWeekNumber() {
-        return ( (nameform) => {
-            return ( <NameForm
-                key={nameform.id}
-                weeknumber={nameform.weeknumber}/>);
-        });
+    _getWeekdays(language){
+       //ToDo - put in a config file?
+        let weekdaysList = [];
+
+        weekdaysList = [
+            {
+                id: 1,
+                language: "No",
+                days: ["Mandag", "Tirsdag","Onsdag","Torsdag","Fredag", "Lørdag","Søndag"]
+            },
+            {
+                id: 2,
+                language: "En",
+                days: ["Monday","Thuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"]
+            }];
+
+        return weekdaysList;
     }
 
     _getEvents() {
@@ -88,8 +110,8 @@ class WeekOverview extends Component {
                 id: 2,
                 actor: {pid: 3, name: 'Sondre', image: './images/Sondre.png'},
                 helper: {pid: 0, name: 'Jørn', image: './images/Jorn.png'},
-                start: '2018-03-13T14:00:00.000',
-                end: '2018-08-13T16:00:00.000',
+                start: '2018-03-13T00:00:00.000',
+                end: '2018-03-15T00:00:00.000',
                 activity: {name: 'fotballtrening', location: 'Molde'}
             },
             {
@@ -98,7 +120,7 @@ class WeekOverview extends Component {
                 helper: {pid: 0, name: 'Jørn', image: './images/Jorn.png'},
                 start: '2018-03-14T17:00:00.000',
                 end: '2018-03-14T18:00:00.000',
-                activity: {name: 'Bassøving', location: 'Charlottenlund'}
+                activity: {name: 'Bass', location: 'Charlottenlund'}
             },
             {
                 id: 4,
@@ -110,26 +132,30 @@ class WeekOverview extends Component {
             }];
 
         return eventList.map((event) => {
-                return (<Event
-                    key={event.id}
-                    actor={event.actor.name}
-                    actorImage={event.actor.image}
-                    helper={event.helper.name}
-                    helperImage={event.helper.image}
-                    start={event.start}
-                    end={(event.end)}
-                    activity={event.activity.name}
-                    location={event.activity.location}/>);
-            }
-        );
+            return (<Event
+                key={event.id}
+                actor={event.actor.name}
+                actorImage={event.actor.image}
+                helper={event.helper.name}
+                helperImage={event.helper.image}
+                start={event.start}
+                end={(event.end)}
+                activity={event.activity.name}
+                location={event.activity.location}
+            />);
+        });
     }
 
 
     _populateHours() {
         let hoursList = [];
-        const starthour = 0;
+        const starthour = 7;
         const endhour = 23;
         for (let i = starthour; i <= endhour; i++) {
+            if (i === starthour){
+                let alldayid = starthour -1;
+                hoursList.push({id: alldayid, hour: "All day"});
+            }
             hoursList.push({id: i, hour: i});
         }
 
@@ -137,6 +163,36 @@ class WeekOverview extends Component {
             return (<Hour
                 key={hour.id}
                 hour={hour.hour}/>);
+        });
+    }
+
+
+    _populateWeekdays(weekdays, language){
+        let weekdaysList = [];
+        console.log("lengdre på weekdaylist ved start:", weekdaysList.length);
+        console.log("Lengde på innkommende weekdays ", weekdays.length,  weekdays);
+        for (let id = 0; id < weekdays.length; id++) {
+
+            if (weekdays[id].language === language) {
+                console.log("inne i ytre loop: " , id);
+                console.log("første dag: ", weekdays[0].days[0]);
+
+                for (let day = 0; day < weekdays[id].days.length; day++){
+                    console.log("inne i indre loop ", day);
+                    console.log("legger til ", weekdays[id].days[day]);
+                    weekdaysList.push({id: day, weekdaynum: day, weekday: weekdays[id].days[day]});
+                    console.log('weekdayList: ', weekdaysList.length, weekdaysList);
+                }
+
+            }
+        }
+
+        return weekdaysList.map( (weekday) => {
+            return ( <Weekday
+                key={weekday.id}
+                weekdaynum={weekday.weekdaynum}
+                weekday={weekday.weekday}
+            />);
         });
     }
 
@@ -178,37 +234,25 @@ class WeekOverview extends Component {
 }
 
 
-class NameForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {value: ''};
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-
-    handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
-        event.preventDefault();
-    }
-
+class Weekday extends Component {
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Name:
-                    <input type="text" value={this.state.value} onChange={this.handleChange} />
-                </label>
-                <input type="submit" value="Submit" />
-            </form>
+            <div className={this._getWeekdayinGrid()}>
+                <div className="weekday">
+                    <p>{this.props.weekday}</p>
+                </div>
+            </div>
+
         );
     }
-}
 
+    _getWeekdayinGrid() {
+        let day = this.props.weekdaynum + 2;
+        console.log("DAGVERDI: " , this.props.weekdaynum, typeof this.props.weekdaynum);
+        let weekdayinGrid = "grid-item grid-weekday grid-row1 grid-col" + day;
+        return weekdayinGrid;
+    }
+}
 
 
 
@@ -227,8 +271,19 @@ class Hour extends Component {
       );
   }
 
+
+
   _getHourinGrid() {
-      let hourinGrid = "grid-item grid-hour grid-col1"+ " grid-row" + this.props.hour + " grid-span1" ;
+
+      let start;
+      if( this.props.hour === "All day") {
+          start = 2;
+      } else {
+          start = this.props.hour -4;
+      }
+
+      console.log("TId: ", this.props.key, " Time ", this.props.hour);
+      let hourinGrid = "grid-item grid-hour grid-col1"+ " grid-row" + start + " grid-rowspan1" ;
       return hourinGrid;
   }
 }
@@ -241,7 +296,7 @@ class Event extends Component {
             <div className="event">
                 <img className="image" src={this.props.actorImage} align="left"/>
                 <img className="image" src={this.props.helperImage} align="right"/>
-                <p> {this.props.activity} {this.props.location}</p>
+                {this.props.activity} {this.props.location}
             </div>
         </div> );
     }
@@ -251,12 +306,37 @@ class Event extends Component {
 
         const startObj = new Date(this.props.start);
         const endObj = new Date(this.props.end);
+        const start_time = startObj.getHours();
+        const start_day = startObj.getDay();
+        const end_day = endObj.getDay();
+        const weekday = startObj.getDay() + 1;
 
-        let start_time = startObj.getHours();
-        let duration = endObj.getHours() - start_time;
-        let weekday = startObj.getDay() + 1;
-        let placeinGrid = "grid-item grid-event grid-col" + weekday + " grid-row" + start_time + " grid-span" + duration;
-        console.log(placeinGrid);
+
+        let duration;
+        let row;
+        let placeinGrid;
+        if (start_day === end_day) {
+
+
+
+            if (start_time === 0) {
+                //all day event
+                row = start_time + 2;
+                placeinGrid = "grid-item grid-event grid-col" + weekday + " grid-row" + row;
+            } else {
+                duration = endObj.getHours() - start_time;
+                row = start_time -4;
+                placeinGrid = "grid-item grid-event grid-col" + weekday + " grid-row" + row + " grid-rowspan" + duration;
+            }
+        } else {
+            //event longer than one day
+            duration = end_day - start_day;
+            placeinGrid = "grid-item grid-event grid-col" + weekday + " grid-colspan" + duration + " grid-row2";
+
+        }
+
+
+
         return placeinGrid;
     }
 }
