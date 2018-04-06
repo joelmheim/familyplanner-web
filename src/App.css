@@ -15,19 +15,20 @@
   grid-template-columns: 50px 1fr;
   grid-template-row: 1fr 1fr;
   grid-template-areas: "header header"
-                        "sidebar content";
+                        "sidebar main";
 }
 .header {
   display: grid;
   grid-area: header;
   grid-template-colums: 3fr 2fr 1fr 1fr 1fr 2fr 3fr;
-  grid-template-rows: 100px;
-  grid-template-areas: "start side-left nav-left week nav-right side-right end";
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:  "top t2 t3 t4 t5 t6 t7"
+                        "start side-left nav-left week nav-right side-right end"
+                        "bottom b2 b3 b4 b5 b6 b7";
   font-family: "Comic Sans MS";
   font-size: x-large;
   font-weight: bolder;
-  color: #f7f7f7;
-  background-color: #007bff;
+  background-color: #4ABDAC;
 }
 
 .start{
@@ -36,58 +37,78 @@
 .week{
   text-align: center;
   grid-area: week;
+  background-color:#fcac1a ;
 }
 
 .nav-left{
   grid-area: nav-left;
-  text-align: center;
+  text-align: right;
 }
 
 .nav-right{
   grid-area: nav-right;
-  text-align: center;
+  text-align: left;
 }
 .main {
-  grid-area: content;
+  grid-area: main;
   display: grid;
-
-  grid-template-columns: 1fr repeat(7, 2fr);
-  grid-template-rows: repeat(18,1fr);
+  grid-template-columns: 50px repeat(7,1fr);
+  grid-template-rows: 50px repeat(18,1fr);
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  background-color: #cce5ff;
-}
-.aside {
-  grid-area: sidebar;
+  : #fcac1a;
+  background-color: #4ABDAC;
 }
 
+
+.aside {
+  grid-area: sidebar;
+  background-color: #4ABDAC;
+}
+
+.button {
+  background-color: #fcac1a;
+}
 .grid-item {
 
   border-radius: 25px;
   box-shadow: 5px 5px;
+  flow-into: events;
 }
 
 .grid-weekday {
   text-align: center;
   font-family: "Comic Sans MS";
-  background-color: #b9bbbe;
+  background-color: #dfdce3;
+  position: relative;
+  border: 10px;
+
 }
 
 .grid-event {
   text-align: center;
+
+
   font-family: "Comic Sans MS";
-  background-color: #71dd8a;
+  background-color: #f78733;
 }
 
 .grid-hour {
   text-align: center;
   font-family: "Comic Sans MS";
   font-size: large;
-  background-color: #72898b;
+  background-color: #dfdce3;
 
 
 }
 
+.grid-layer1 {
+  z-index: 1;
+}
+
+.grid-layer2 {
+  z-index: 2;
+}
 .grid-col1 {
   grid-column-start: 1;
 }

@@ -30,7 +30,6 @@ class WeekOverview extends Component {
         let thisWeek = today.getWeek()
         this.setState({events:events, weekNumber: thisWeek, weekdays: weekdays, numEvents:events.length});
 
-        console.log("Dagens dato og uke: ", today, " ", thisWeek);
 
     }
 
@@ -48,7 +47,7 @@ class WeekOverview extends Component {
         return (
             <div className="grid-container">
                 <div className="header">
-                    <div className="start"> Familyplanner</div>
+                    <div className="start">Familyplanner</div>
                     <div className="nav-left">
                         <button onClick={this.decreaseWeek} >
                             -
@@ -62,9 +61,8 @@ class WeekOverview extends Component {
                      </div>
                 </div>
                 <div className="main">
-                    Main
-                    {this._populateWeekdays(this.state.weekdays, this.state.language)}
                     {this._populateHours()}
+                    {this._populateWeekdays(this.state.weekdays, this.state.language)}
                     {this._populateEvents(this.state.events, this.state.weekNumber)}
                 </div>
 
@@ -95,16 +93,16 @@ class WeekOverview extends Component {
     _getEvents() {
         //ToDo - replace with request to API
         let eventList = []; //empty list on  each function call
-        console.log('length eventlist: ', eventList.length);
+
 
         eventList = [
             {
                 id: 1,
                 actor: {pid: 1, name: 'Emma', image: './images/Emma.png'},
                 helper: {pid: 2, name: 'Marita', image: './images/Marita.png'},
-                start: '2018-03-12T18:00:00.000',
-                end: '2018-03-12T21:00:00.000',
-                activity: {name: 'Svømming', location: 'Pirbadet'}
+                start: '2018-03-13T18:00:00.000',
+                end: '2018-03-13T21:00:00.000',
+                activity: {name: 'Svømming', location: 'tirsdag Pirbadet'}
             },
             {
                 id: 2,
@@ -112,23 +110,63 @@ class WeekOverview extends Component {
                 helper: {pid: 0, name: 'Jørn', image: './images/Jorn.png'},
                 start: '2018-03-13T00:00:00.000',
                 end: '2018-03-15T00:00:00.000',
-                activity: {name: 'fotballtrening', location: 'Molde'}
+                activity: {name: 'fotballtrening', location: 'tirs-ons Molde'}
             },
             {
                 id: 3,
                 actor: {pid: 4, name: 'Maia', image: './images/Maia.png'},
                 helper: {pid: 0, name: 'Jørn', image: './images/Jorn.png'},
-                start: '2018-03-14T17:00:00.000',
-                end: '2018-03-14T18:00:00.000',
-                activity: {name: 'Bass', location: 'Charlottenlund'}
+                start: '2018-04-05T17:00:00.000',
+                end: '2018-04-05T18:00:00.000',
+                activity: {name: 'Bass', location: 'torsdag Charlottenlund'}
             },
             {
                 id: 4,
                 actor: {pid: 4, name: 'Maia', image: './images/Maia.png'},
                 helper: {pid: 2, name: 'Marita', image: './images/Marita.png'},
-                start: '2018-03-20T17:00:00.000',
-                end: '2018-03-20T20:00:00.000',
-                activity: {name: 'Korps', location: 'Vikåsen'}
+                start: '2018-04-08T17:00:00.000',
+                end: '2018-04-09T20:00:00.000',
+                activity: {name: 'Søndag - mandag Korps', location: 'Vikåsen'}
+            },
+            {
+                id: 5,
+                actor: {pid: 1, name: 'Emma', image: './images/Emma.png'},
+                helper: {pid: 2, name: 'Marita', image: './images/Marita.png'},
+                start: '2018-03-20T18:00:00.000',
+                end: '2018-03-20T21:00:00.000',
+                activity: {name: 'Svømming', location: 'Tirsdag Pirbadet'}
+            },
+            {
+                id: 5,
+                actor: {pid: 3, name: 'Sondre', image: './images/Sondre.png'},
+                helper: {pid: 2, name: 'Marita', image: './images/Jorn.png'},
+                start: '2018-03-22T00:00:00.000',
+                end: '2018-03-23T00:00:00.000',
+                activity: {name: 'fotballtrening', location: 'Torsdag Molde'}
+            },
+            {
+                id: 6,
+                actor: {pid: 4, name: 'Maia', image: './images/Maia.png'},
+                helper: {pid: 0, name: 'Jørn', image: './images/Jorn.png'},
+                start: '2018-03-23T17:00:00.000',
+                end: '2018-03-24T18:00:00.000',
+                activity: {name: 'Bass', location: 'fredag 17-lørdag 18 Vikåsen'}
+            },
+            {
+                id: 7,
+                actor: {pid: 4, name: 'Maia', image: './images/Maia.png'},
+                helper: {pid: 2, name: 'Marita', image: './images/Marita.png'},
+                start: '2018-03-27T17:00:00.000',
+                end: '2018-03-27T20:00:00.000',
+                activity: {name: 'Korps', location: 'tirdag Reppe'}
+            },
+            {
+                id: 8,
+                actor: {pid: 0, name: 'Jørn', image: './images/Jorn.png'},
+                helper: {pid: 2, name: 'Marita', image: './images/Marita.png'},
+                start: '2018-04-09T00:00:00.000',
+                end: '2018-04-23T00:00:00.000',
+                activity: {name: 'Reise', location: '2 uker usa'}
             }];
 
         return eventList.map((event) => {
@@ -148,14 +186,12 @@ class WeekOverview extends Component {
 
 
     _populateHours() {
-        let hoursList = [];
         const starthour = 7;
         const endhour = 23;
+        let hoursList = [];
+
+        hoursList.push({id: 0, hour: "All day"});
         for (let i = starthour; i <= endhour; i++) {
-            if (i === starthour){
-                let alldayid = starthour -1;
-                hoursList.push({id: alldayid, hour: "All day"});
-            }
             hoursList.push({id: i, hour: i});
         }
 
@@ -169,21 +205,12 @@ class WeekOverview extends Component {
 
     _populateWeekdays(weekdays, language){
         let weekdaysList = [];
-        console.log("lengdre på weekdaylist ved start:", weekdaysList.length);
-        console.log("Lengde på innkommende weekdays ", weekdays.length,  weekdays);
         for (let id = 0; id < weekdays.length; id++) {
 
             if (weekdays[id].language === language) {
-                console.log("inne i ytre loop: " , id);
-                console.log("første dag: ", weekdays[0].days[0]);
-
                 for (let day = 0; day < weekdays[id].days.length; day++){
-                    console.log("inne i indre loop ", day);
-                    console.log("legger til ", weekdays[id].days[day]);
                     weekdaysList.push({id: day, weekdaynum: day, weekday: weekdays[id].days[day]});
-                    console.log('weekdayList: ', weekdaysList.length, weekdaysList);
                 }
-
             }
         }
 
@@ -200,23 +227,26 @@ class WeekOverview extends Component {
         console.log("antall events i populate", events.length, typeof events, "innhold ", events);
         let eventList = [];
         let eventStartObj;
+        let eventEndObj;
         let weekday;
         let starttime;
         let duration;
 
-        console.log('innhold eventList før push ', eventList);
 
         for (let id = 0; id < events.length; id++) {
             eventStartObj = new Date(events[id].props.start);
-            console.log('Start week ', eventStartObj.getWeek());
-            let eventWeek = eventStartObj.getWeek();
-            if(eventWeek === weekNumber) {
-                eventList.push({id: id, event: events[id]});
+            eventEndObj = new Date(events[id].props.end);
+            console.log('Start week ', eventStartObj.getWeek(), ', End week: ', eventEndObj.getWeek());
+            let eventStartWeek = eventStartObj.getWeek();
+            let eventEndWeek = eventEndObj.getWeek();
+
+            if  ( (eventStartWeek === weekNumber || eventEndWeek === weekNumber ) ||
+                (weekNumber > eventStartWeek && weekNumber < eventEndWeek) )
+            {
+                    eventList.push({id: id, event: events[id]});
             }
         }
 
-
-        console.log('innhold eventList etter push ', eventList);
 
         return eventList.map((event) => {
             return ( <Event
@@ -228,7 +258,8 @@ class WeekOverview extends Component {
                 helperImage={event.event.props.helperImage}
                 location={event.event.props.location}
                 start={event.event.props.start}
-                end={event.event.props.end}/>);
+                end={event.event.props.end}
+                week={weekNumber}/>);
         });
     }
 }
@@ -239,7 +270,7 @@ class Weekday extends Component {
         return (
             <div className={this._getWeekdayinGrid()}>
                 <div className="weekday">
-                    <p>{this.props.weekday}</p>
+                    {this.props.weekday}
                 </div>
             </div>
 
@@ -248,7 +279,6 @@ class Weekday extends Component {
 
     _getWeekdayinGrid() {
         let day = this.props.weekdaynum + 2;
-        console.log("DAGVERDI: " , this.props.weekdaynum, typeof this.props.weekdaynum);
         let weekdayinGrid = "grid-item grid-weekday grid-row1 grid-col" + day;
         return weekdayinGrid;
     }
@@ -261,28 +291,25 @@ class Weekday extends Component {
 class Hour extends Component {
   render () {
       return (
-
-            <div className={this._getHourinGrid()}>
-                <div className="hour">
-                    <p>{this.props.hour}</p>
-                </div>
+        <div className={this._getHourinGrid()}>
+            <div className="hour">
+                {this.props.hour}
             </div>
-
+        </div>
       );
   }
 
 
 
   _getHourinGrid() {
-
       let start;
+
       if( this.props.hour === "All day") {
           start = 2;
       } else {
           start = this.props.hour -4;
       }
 
-      console.log("TId: ", this.props.key, " Time ", this.props.hour);
       let hourinGrid = "grid-item grid-hour grid-col1"+ " grid-row" + start + " grid-rowspan1" ;
       return hourinGrid;
   }
@@ -293,11 +320,9 @@ class Event extends Component {
     render() {
        return(
         <div className={this._getEventinGrid()}>
-            <div className="event">
-                <img className="image" src={this.props.actorImage} align="left"/>
-                <img className="image" src={this.props.helperImage} align="right"/>
-                {this.props.activity} {this.props.location}
-            </div>
+            <img className="image" src={this.props.actorImage} align="left"/>
+            <img className="image" src={this.props.helperImage} align="right"/>
+            {this.props.activity} {this.props.location}
         </div> );
     }
 
@@ -306,32 +331,66 @@ class Event extends Component {
 
         const startObj = new Date(this.props.start);
         const endObj = new Date(this.props.end);
-        const start_time = startObj.getHours();
-        const start_day = startObj.getDay();
-        const end_day = endObj.getDay();
-        const weekday = startObj.getDay() + 1;
+        const startHour = startObj.getHours();
+        let startDay = startObj.getDay();
+        const startWeek = startObj.getWeek();
+        let endDay = endObj.getDay();
+        const endWeek = endObj.getWeek();
+        let startDayColumn;
+        let endDayColumn;
 
+        const displayWeek= this.props.week;
+
+        console.log('vis uke: ', displayWeek);
 
         let duration;
         let row;
         let placeinGrid;
-        if (start_day === end_day) {
 
-
-
-            if (start_time === 0) {
-                //all day event
-                row = start_time + 2;
-                placeinGrid = "grid-item grid-event grid-col" + weekday + " grid-row" + row;
-            } else {
-                duration = endObj.getHours() - start_time;
-                row = start_time -4;
-                placeinGrid = "grid-item grid-event grid-col" + weekday + " grid-row" + row + " grid-rowspan" + duration;
-            }
+        if (startDay === 0) { //sunday is 0 as default from Date
+            startDay = 7;
+            startDayColumn = 8;
         } else {
-            //event longer than one day
-            duration = end_day - start_day;
-            placeinGrid = "grid-item grid-event grid-col" + weekday + " grid-colspan" + duration + " grid-row2";
+            startDayColumn = startDay +1;
+        }
+
+        if (endDay === 0) {
+            endDay = 7;
+            endDayColumn = 8;
+        } else {
+            endDayColumn = endDay +1;
+        }
+
+
+        placeinGrid = "grid-item grid-event grid-col";
+
+        if (startWeek === endWeek) {
+            if (startDay === endDay) {
+                if (startHour === 0) {
+                    //all day event
+                    row = startHour + 2;
+                    placeinGrid += startDayColumn + " grid-row" + row ;
+                } else {
+                    duration = endObj.getHours() - startHour;
+                    row = startHour -4;
+                    placeinGrid += startDayColumn + " grid-row" + row + " grid-rowspan" + duration +" grid-layer2";
+                }
+            } else {
+                //event longer than one day
+                duration = endDay - startDay;
+                placeinGrid += startDayColumn + " grid-colspan" + duration + " grid-row2" +" grid-layer2";
+            }
+        } else { ///event går over helg -> neste uke  -put into all day event row
+            if (startWeek === displayWeek) {
+                duration = 8 - startDay;
+                placeinGrid +=  startDayColumn + " grid-colspan" + duration + " grid-row2";
+            } else if ( (displayWeek > startWeek) && (displayWeek < endWeek) ) {
+                duration = 7;
+                placeinGrid += "2" + " grid-colspan" + duration + " grid-row2" +" grid-layer1";
+            } else {
+                duration = endDay;
+                placeinGrid +=  endDayColumn + " grid-colspan" + duration + " grid-row2";
+            }
 
         }
 
