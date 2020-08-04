@@ -1,50 +1,301 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-
-.event-activty {
-  background-color: #9fcdff;
-}
 
 .image {
   height: 40px;
   width: 30px;
+  border-radius: 25px;
 }
 
-.css_duration1 {
-  padding: 10%;
+.event-week {
+  font-family: "Comic Sans MS";
+  font-size: larger;
 }
 
-.css_duration2 {
-  padding: 20%;
+.grid-container {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  grid-template-row: 1fr 1fr;
+  grid-template-areas: "header header"
+                        "sidebar main";
+}
+.header {
+  display: grid;
+  grid-area: header;
+  grid-template-colums: 3fr 2fr 1fr 1fr 1fr 2fr 3fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:  "top t2 t3 t4 t5 t6 t7"
+                        "start side-left nav-left week nav-right side-right end"
+                        "bottom b2 b3 b4 b5 b6 b7";
+  font-family: "Comic Sans MS";
+  font-size: x-large;
+  font-weight: bolder;
+  background-color: #4ABDAC;
 }
 
-.css_duration3 {
-  padding: 30%;
+.start{
+  text-align: center;
 }
+.week{
+  text-align: center;
+  grid-area: week;
+  background-color:#fcac1a ;
+}
+
+.nav-left{
+  grid-area: nav-left;
+  text-align: right;
+}
+
+.nav-right{
+  grid-area: nav-right;
+  text-align: left;
+}
+.main {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 50px repeat(7,1fr);
+  grid-template-rows: 50px repeat(18,1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  : #fcac1a;
+  background-color: #4ABDAC;
+}
+
+
+.aside {
+  grid-area: sidebar;
+  background-color: #4ABDAC;
+}
+
+.button {
+  background-color: #fcac1a;
+}
+.grid-item {
+
+  border-radius: 25px;
+  box-shadow: 5px 5px;
+  flow-into: events;
+}
+
+.grid-weekday {
+  text-align: center;
+  font-family: "Comic Sans MS";
+  background-color: #dfdce3;
+  position: relative;
+  border: 10px;
+
+}
+
+.grid-event {
+  text-align: center;
+
+
+  font-family: "Comic Sans MS";
+  background-color: #f78733;
+}
+
+.grid-hour {
+  text-align: center;
+  font-family: "Comic Sans MS";
+  font-size: large;
+  background-color: #dfdce3;
+
+
+}
+
+.grid-layer1 {
+  z-index: 1;
+}
+
+.grid-layer2 {
+  z-index: 2;
+}
+.grid-col1 {
+  grid-column-start: 1;
+}
+
+
+.grid-col2 {
+  grid-column-start: 2;
+}
+
+.grid-col3 {
+  grid-column-start: 3;
+}
+
+.grid-col4 {
+  grid-column-start: 4;
+}
+
+.grid-col5 {
+  grid-column-start: 5;
+}
+
+.grid-col6 {
+  grid-column-start: 6;
+}
+
+.grid-col7 {
+  grid-column-start: 7;
+}
+
+.grid-col8 {
+  grid-column-start: 8;
+}
+
+.grid-row1 {
+  grid-row-start: 1;
+}
+
+.grid-row2 {
+  grid-row-start: 2;
+}
+
+.grid-row3 {
+  grid-row-start: 3;
+}
+
+.grid-row4 {
+  grid-row-start: 4;
+}
+
+.grid-row5 {
+  grid-row-start: 5;
+}
+
+.grid-row6 {
+  grid-row-start: 6;
+}
+
+.grid-row7 {
+  grid-row-start: 7;
+}
+
+.grid-row8 {
+  grid-row-start: 8;
+}
+
+.grid-row9 {
+  grid-row-start: 9;
+}
+
+.grid-row10 {
+  grid-row-start: 10;
+}
+
+.grid-row11 {
+  grid-row-start: 11;
+}
+
+.grid-row12 {
+  grid-row-start: 12;
+}
+
+.grid-row13 {
+  grid-row-start: 13;
+}
+
+.grid-row14 {
+  grid-row-start: 14;
+}
+
+.grid-row15 {
+  grid-row-start: 15;
+}
+
+.grid-row16 {
+  grid-row-start: 16;
+}
+
+.grid-row17 {
+  grid-row-start: 17;
+}
+
+.grid-row18 {
+  grid-row-start: 18;
+}
+
+.grid-row19 {
+  grid-row-start: 19;
+}
+
+.grid-row20 {
+  grid-row-start: 20;
+}
+
+.grid-row21 {
+  grid-row-start: 21;
+}
+
+.grid-row22 {
+  grid-row-start: 22;
+}
+
+.grid-row23 {
+  grid-row-start: 23;
+}
+.grid-row24 {
+  grid-row-start: 24;
+}
+
+.grid-rowspan1{
+  grid-row-end: span 1;
+}
+
+.grid-rowspan2{
+  grid-row-end: span 2;
+}
+
+.grid-rowspan3{
+  grid-row-end: span 3;
+}
+
+.grid-rowspan4{
+  grid-row-end: span 4;
+}
+
+.grid-rowspan5{
+  grid-row-end: span 5;
+}
+
+.grid-rowspan6{
+  grid-row-end: span 6;
+}
+
+.grid-rowspan7{
+  grid-row-end: span 7;
+}
+
+.grid-rowspan8{
+  grid-row-end: span 8;
+}
+
+.grid-colspan1{
+  grid-column-end: span 1;
+}
+
+.grid-colspan2{
+  grid-column-end: span 2;
+}
+
+.grid-colspan3{
+  grid-column-end: span 3;
+}
+
+.grid-colspan4{
+  grid-column-end: span 4;
+}
+.grid-colspan5{
+  grid-column-end: span 5;
+}
+.grid-colspan6{
+  grid-column-end: span 6;
+}
+.grid-colspan7{
+  grid-column-end: span 7;
+}
+.grid-colspan8{
+  grid-column-end: span 8;
+}
+
+
+
